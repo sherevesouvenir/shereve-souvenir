@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SherEve | Aesthetic Souvenir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --wood-brown: #5d4037;
+            --leaf-green: #6d8c54; 
+            --cream-bg: #fdfaf1; 
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(93, 64, 55, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream-bg) !important;
+            background-image: none !important;
+            color: var(--wood-brown);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMASI DAUN BERGUGURAN --- */
+        #leaf-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .falling-leaf {
+            position: absolute; top: -50px; animation: fall linear forwards;
+            filter: sepia(0.5); opacity: 0.6;
+        }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(253, 250, 241, 0.8);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Container Logo & Back */
+        .nav-left { display: flex; align-items: center; gap: 15px; }
+
+        .btn-back-link {
+            text-decoration: none; color: var(--wood-brown); font-size: 0.8rem;
+            background: rgba(93, 64, 55, 0.05); padding: 8px 15px;
+            border-radius: 10px; border: 1px solid var(--glass-border);
+            transition: 0.3s; font-weight: 600;
+        }
+        .btn-back-link:hover { background: var(--wood-brown); color: white; }
+
+        .logo-wrapper { display: flex; align-items: center; gap: 10px; }
+        
+        /* GANTI LOGO DISINI */
+        .brand-logo { width: 35px; height: 35px; object-fit: contain; }
+
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: bold; }
+        .logo span { color: var(--leaf-green); }
+
+        .cart-icon {
+            cursor: pointer; background: var(--glass-bg); padding: 10px 20px;
+            border-radius: 30px; border: 1px solid var(--glass-border);
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .cart-icon:hover {
+            transform: scale(1.1);
+            background: var(--leaf-green);
+            color: white;
+            box-shadow: 0 8px 20px rgba(109, 140, 84, 0.3);
+        }
+
+        /* --- HEADER --- */
+        header { text-align: center; padding: 80px 20px 40px; }
+        .animated-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; overflow: hidden; }
+        .animated-title span { display: inline-block; transform: translateY(100%); animation: reveal 1s forwards; }
+        @keyframes reveal { to { transform: translateY(0); } }
+
+        /* --- PRODUCT GRID --- */
+        .container {
+            width: 85%; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px; padding-bottom: 100px; position: relative; z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 25px; 
+            border: 1px solid var(--glass-border);
+            padding: 25px; 
+            text-align: center; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.05);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+
+        .glass-card:hover { 
+            transform: translateY(-15px); 
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(93, 64, 55, 0.15);
+            border-color: var(--leaf-green);
+        }
+
+        .product-img { 
+            width: 100%; height: 250px; object-fit: cover; border-radius: 20px; 
+            margin-bottom: 15px; transition: transform 0.5s ease;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .glass-card:hover .product-img { transform: scale(1.05); }
+
+        .btn-add {
+            background: var(--wood-brown); color: #fff; border: none; padding: 12px;
+            border-radius: 15px; font-weight: bold; cursor: pointer; width: 100%; 
+            margin-top: 15px; transition: all 0.3s ease;
+        }
+        .btn-add:hover { 
+            background: var(--leaf-green); 
+            box-shadow: 0 5px 15px rgba(109, 140, 84, 0.4);
+        }
+
+        /* --- MODAL KERANJANG --- */
+        #cart-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(93, 64, 55, 0.3); backdrop-filter: blur(8px);
+            z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--cream-bg); padding: 30px; border-radius: 30px;
+            width: 90%; max-width: 480px; border: 1px solid var(--glass-border);
+        }
+
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .qty-control { display: flex; align-items: center; gap: 10px; background: #fff; padding: 5px 15px; border-radius: 20px; }
+        .btn-qty { background: none; border: none; color: var(--wood-brown); cursor: pointer; font-size: 1.2rem; font-weight: bold; transition: transform 0.2s; }
+        .btn-qty:hover { transform: scale(1.4); color: var(--leaf-green); }
+
+        .btn-wa { 
+            background: #25D366; color: white; width: 100%; padding: 15px; 
+            border: none; border-radius: 12px; font-weight: bold; margin-top: 20px; 
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-wa:hover { background: #1ebd58; transform: translateY(-2px); }
+
+        #notification {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--wood-brown); color: white; padding: 12px 40px; border-radius: 50px;
+            z-index: 2000; transition: 0.5s;
+        }
+        #notification.show { bottom: 40px; }
+    </style>
+</head>
+<body>
+
+    <div id="leaf-container"></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html" class="btn-back-link">← Beranda</a>
+            
+            <div class="logo-wrapper">
+                <img src="logo-anda.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+                <div class="logo">Sher<span>Eve</span></div>
+            </div>
+        </div>
+        
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒 <span id="cart-count">0</span> Item
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="animated-title"><span>Aesthetic Collection</span></h1>
+        <p style="opacity: 0.7; font-style: italic;">"Keindahan alam dalam setiap detail."</p>
+    </header>
+
+    <div class="container" id="product-grid"></div>
+
+    <div id="cart-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px; text-align: center; font-family: 'Playfair Display';">Tas Belanja</h2>
+            <div id="cart-items-list"></div>
+            <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 1.3rem; border-top: 1px solid #ddd; padding-top: 15px;">
+                <span>Total:</span>
+                <span id="total-price" style="font-weight: bold; color: var(--leaf-green);">Rp 0</span>
+            </div>
+            <button class="btn-wa" onclick="checkoutWA()">Checkout WhatsApp</button>
+            <button onclick="toggleCart()" style="margin-top:15px; width:100%; background:none; border:none; cursor:pointer; color:#888;">Tutup</button>
+        </div>
+    </div>
+
+    <div id="notification">🌿 <span id="notif-text">Produk ditambahkan!</span></div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Terrarium Glass Wood", price: 4000, img: "aset-image/img1.jpeg" },
+            { id: 2, name: "Transparent Wooden Clock", price: 5000, img: "aset-image/img2.jpeg" },
+            { id: 3, name: "Glass Herb Jar with Oak", price: 4000, img: "aset-image/img3.jpeg" },
+            { id: 4, name: "Aesthetic Wood Candle", price: 5500, img: "aset-image/img4.jpeg" },
+            { id: 5, name: "Leaf Pressed Glass Frame", price: 4500, img: "aset-image/img5.jpeg" }
+        ];
+
+        let cart = [];
+
+        function init() {
+            const grid = document.getElementById('product-grid');
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="glass-card">
+                        <img src="${p.img}" class="product-img" alt="${p.name}">
+                        <div>
+                            <h3 style="font-family: 'Playfair Display';">${p.name}</h3>
+                            <p style="color:var(--leaf-green); font-weight:bold;">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${p.id})">TAMBAH KE TAS</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) { existing.qty++; } 
+            else { cart.push({ ...product, qty: 1 }); }
+            updateCartUI();
+            showNotification(product.name + " ditambahkan!");
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((acc, curr) => acc + curr.qty, 0);
+            document.getElementById('cart-count').innerText = totalItems;
+            const list = document.getElementById('cart-items-list');
+            const totalEl = document.getElementById('total-price');
+            list.innerHTML = cart.length === 0 ? "<p style='text-align:center; opacity:0.5;'>Tas masih kosong.</p>" : "";
+            let totalPrice = 0;
+            cart.forEach(item => {
+                totalPrice += item.price * item.qty;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div style="flex:1">
+                            <p style="font-weight:600; font-size:0.9rem;">${item.name}</p>
+                            <p style="font-size:0.8rem; opacity:0.6;">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="qty-control">
+                            <button class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            totalEl.innerText = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function showNotification(text) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notif-text').innerText = text;
+            notif.classList.add('show');
+            setTimeout(() => { notif.classList.remove('show'); }, 2000);
+        }
+
+        function checkoutWA() {
+            if (cart.length === 0) return alert("Pilih produk dulu ya!");
+            const phone = "628123456789"; 
+            let message = "*PESANAN BARU - SHEREVE*%0A%0A";
+            cart.forEach((item, i) => { message += `${i+1}. *${item.name}* (x${item.qty})%0A`; });
+            let finalPrice = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+            message += `%0A*Total: Rp ${finalPrice.toLocaleString('id-ID')}*`;
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+
+        function createLeaf() {
+            const container = document.getElementById('leaf-container');
+            const symbols = ['🌿', '🍃', '🍂'];
+            const leaf = document.createElement('div');
+            leaf.className = 'falling-leaf';
+            leaf.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            const duration = 7 + Math.random() * 10;
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = duration + 's';
+            leaf.style.fontSize = (15 + Math.random() * 20) + 'px';
+            container.appendChild(leaf);
+            setTimeout(() => { leaf.remove(); }, duration * 1000);
+        }
+        setInterval(createLeaf, 800);
+
+        init();
+    </script>
+</body>
+</html>
