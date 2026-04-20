@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woody & Glass Souvenir | Estetik & Organik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --wood-brown: #5d4037;
+            --leaf-green: #4caf50;
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success-green: rgba(76, 175, 80, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMASI DAUN BERGUGURAN --- */
+        #leaf-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .falling-leaf {
+            position: absolute;
+            top: -50px;
+            cursor: default;
+            user-select: none;
+            z-index: 0;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .btn-back {
+            text-decoration: none; color: white; font-size: 0.8rem;
+            background: rgba(255,255,255,0.1); padding: 8px 15px;
+            border-radius: 10px; border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.2); }
+
+        .logo-container { display: flex; align-items: center; gap: 10px; }
+        .main-logo-svg { width: 30px; height: 30px; fill: var(--leaf-green); filter: drop-shadow(0 0 5px var(--leaf-green)); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: bold; }
+        .logo span { color: var(--leaf-green); }
+
+        .cart-icon {
+            cursor: pointer; background: var(--glass-bg); padding: 10px 20px;
+            border-radius: 30px; border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        .cart-icon:hover { transform: scale(1.05); background: rgba(255,255,255,0.2); }
+
+        /* --- HEADER & ANIMASI TEKS --- */
+        header { text-align: center; padding: 80px 20px 40px; position: relative; z-index: 1; }
+        .animated-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; overflow: hidden; margin-bottom: 10px; }
+        .animated-title span { 
+            display: inline-block; 
+            transform: translateY(100%); 
+            animation: revealTitle 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards; 
+        }
+        @keyframes revealTitle { to { transform: translateY(0); } }
+
+        /* --- PRODUCT GRID --- */
+        .container {
+            width: 85%; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; padding-bottom: 100px; position: relative; z-index: 1;
+        }
+
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(10px);
+            border-radius: 20px; border: 1px solid var(--glass-border);
+            padding: 20px; text-align: center; transition: 0.4s ease;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .glass-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.2); }
+
+        .product-img {
+            width: 100%; height: 230px; object-fit: contain;
+            background: rgba(255,255,255,0.05); border-radius: 15px; margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .btn-add {
+            background: #fff; color: var(--wood-brown); border: none;
+            padding: 12px; border-radius: 25px; font-weight: bold;
+            cursor: pointer; width: 100%; transition: 0.3s; margin-top: 15px;
+        }
+        .btn-add:hover { background: var(--leaf-green); color: white; }
+
+        /* --- MODAL KERANJANG --- */
+        #cart-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(30, 30, 30, 0.95); backdrop-filter: blur(20px);
+            padding: 30px; border-radius: 25px; width: 90%; max-width: 480px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .qty-control { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; }
+        .btn-qty { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        .btn-remove { background: none; border: none; color: #ff7675; cursor: pointer; font-size: 0.8rem; margin-left: 10px; }
+
+        .btn-wa { background: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        .btn-close { margin-top: 15px; color: #aaa; background: none; border: none; cursor: pointer; width: 100%; }
+
+        /* --- NOTIF TOAST --- */
+        #notification {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--success-green); padding: 12px 30px; border-radius: 50px;
+            z-index: 2000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        #notification.show { bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <div id="leaf-container"></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="btn-back" onclick="window.history.back(); return false;">← Kembali</a>
+            <div class="logo-container">
+                <svg class="main-logo-svg" viewBox="0 0 24 24"><path d="M17,8C11.2,11.6,9,18,9,18C9,18,7.2,14.8,5,12c-2.1-2.7-4-5.1-4-7c0-2.2,1.8-4,4-4C7.2,1,9,2.8,9,5c0,1.2-0.4,2.3-1,3 c2.1,0.6,4.5,2.1,6.5,4c1.6,1.5,2.5,2.9,2.5,4c0,0.6-0.2,1.1-0.5,1.5C18.6,15.7,20,13.1,20,10c0-4.4-3.6-8-8-8c-1.7,0-3.2,0.5-4.6,1.4 M22,12c0,5.5-4.5,10-10,10c-2.4,0-4.6-0.8-6.4-2.2C7.2,20.6,9,19,9,17c0-1.1-0.4-2.1-1-2.9c1.5,0.4,3.1,1.1,4.5,2.1 C14.6,17.7,16,19.3,16,21c0,0.6-0.1,1.1-0.3,1.6C18.4,21.3,20,19.3,20,17c0-2.8-2.2-5-5-5c-1,0-1.9,0.3-2.7,0.8 C13.6,12.3,15,13.1,16,14c1.1,1,2,2.2,2,3.5c0,2.5-2,4.5-4.5,4.5s-4.5-2-4.5-4.5c0-0.7,0.1-1.3,0.4-1.9C6.9,16.5,5,15.6,3,15.6"/></svg>
+                <div class="logo">Sher<span>Eve</span></div>
+            </div>
+        </div>
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒 <span id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="animated-title"><span>Aesthetic Collection</span></h1>
+        <p style="opacity: 0.8;">Sentuhan kaca dan kayu untuk kenangan abadi.</p>
+    </header>
+
+    <div class="container" id="product-grid"></div>
+
+    <div id="cart-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px; text-align: center; font-family: 'Playfair Display';">Ringkasan Belanja</h2>
+            <div id="cart-items-list"></div>
+            <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 1.2rem; border-top: 1px solid #444; padding-top: 15px;">
+                <span>Total:</span>
+                <span id="total-price" style="font-weight: bold; color: var(--leaf-green);">Rp 0</span>
+            </div>
+            <button class="btn-wa" onclick="checkoutWA()">Pesan via WhatsApp</button>
+            <button class="btn-close" onclick="toggleCart()">Tutup</button>
+        </div>
+    </div>
+
+    <div id="notification">🌿 <span id="notif-text">Ditambahkan!</span></div>
+
+    <script>
+        // --- DATA PRODUK ---
+        const products = [
+            { id: 1, name: "Terrarium Glass Wood", price: 45000, img: "aset-image/img1.jpeg" },
+            { id: 2, name: "Transparent Wooden Clock", price: 75000, img: "aset-image/img2.jpeg" },
+            { id: 3, name: "Glass Herb Jar with Oak", price: 35000, img: "aset-image/img3.jpeg" },
+            { id: 4, name: "Aesthetic Wood Candle", price: 55000, img: "aset-image/img4.jpeg" },
+            { id: 5, name: "Leaf Pressed Glass Frame", price: 60000, img: "aset-image/img5.jpeg" }
+        ];
+
+        let cart = [];
+
+        // --- ANIMASI DAUN BERGUGURAN (JS DRIVEN) ---
+        function createLeaf() {
+            const container = document.getElementById('leaf-container');
+            const leafSymbols = ['🌿', '🍃', '🍂', '🍁'];
+            const leaf = document.createElement('div');
+            
+            leaf.className = 'falling-leaf';
+            leaf.innerText = leafSymbols[Math.floor(Math.random() * leafSymbols.length)];
+            
+            const startPos = Math.random() * window.innerWidth;
+            const duration = 5 + Math.random() * 10; // 5s sampai 15s
+            const size = 15 + Math.random() * 20; // 15px sampai 35px
+            const opacity = 0.3 + Math.random() * 0.5;
+
+            leaf.style.left = startPos + 'px';
+            leaf.style.animationDuration = duration + 's';
+            leaf.style.fontSize = size + 'px';
+            leaf.style.opacity = opacity;
+
+            container.appendChild(leaf);
+
+            // Hapus elemen setelah animasi selesai agar tidak memberatkan browser
+            setTimeout(() => {
+                leaf.remove();
+            }, duration * 1000);
+        }
+
+        // Jalankan pembuat daun setiap 600ms
+        setInterval(createLeaf, 600);
+
+        // --- LOGIKA KERANJANG ---
+        function init() {
+            const grid = document.getElementById('product-grid');
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="glass-card">
+                        <img src="${p.img}" class="product-img" alt="${p.name}">
+                        <div>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${p.name}</h3>
+                            <p style="color:#dcedc8; font-weight:bold;">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(id) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id: id, qty: 1 });
+            }
+            updateCartUI();
+            showNotification("Produk ditambahkan!");
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) removeFromCart(id);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((acc, curr) => acc + curr.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+            
+            const list = document.getElementById('cart-items-list');
+            const totalEl = document.getElementById('total-price');
+            list.innerHTML = cart.length === 0 ? "<p style='text-align:center; opacity:0.5;'>Belum ada produk.</p>" : "";
+            
+            let total = 0;
+            cart.forEach(item => {
+                const p = products.find(prod => prod.id === item.id);
+                const subtotal = p.price * item.qty;
+                total += subtotal;
+                
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div style="flex:1">
+                            <p style="font-weight:600; font-size:0.9rem;">${p.name}</p>
+                            <p style="font-size:0.8rem; opacity:0.7;">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="qty-control">
+                            <button class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="btn-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+                    </div>
+                `;
+            });
+            totalEl.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function showNotification(text) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notif-text').innerText = text;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.add('show'), 10);
+            setTimeout(() => notif.classList.remove('show'), 2000);
+        }
+
+        function checkoutWA() {
+            if (cart.length === 0) return alert("Keranjang masih kosong!");
+            const phone = "628123456789"; // Ganti nomor Anda
+            let message = "*PESANAN BARU - WOODY GLASS*%0A%0A";
+            
+            cart.forEach((item, i) => {
+                const p = products.find(prod => prod.id === item.id);
+                message += `${i+1}. *${p.name}* x${item.qty} (Rp ${(p.price * item.qty).toLocaleString('id-ID')})%0A`;
+            });
+            
+            const total = cart.reduce((acc, curr) => {
+                const p = products.find(prod => prod.id === curr.id);
+                return acc + (p.price * curr.qty);
+            }, 0);
+            
+            message += `%0A*TOTAL PEMBAYARAN: Rp ${total.toLocaleString('id-ID')}*%0A%0AMohon info selanjutnya ya!`;
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+
+        init();
+    </script>
+</body>
+</html>
