@@ -3,156 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Woody & Glass Souvenir | Estetik & Organik</title>
+    <title>SherEve | Aesthetic, Cool & Eco-Friendly Gifts</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --wood-brown: #5d4037;
-            --leaf-green: #4caf50;
-            --glass-bg: rgba(255, 255, 255, 0.12);
-            --glass-border: rgba(255, 255, 255, 0.25);
-            --success-green: rgba(76, 175, 80, 0.9);
+            --leaf-green: #6d8c54; 
+            --cream-bg: #fdfaf1; 
+            /* Update: Background Lebih Transparan */
+            --glass-bg: rgba(255, 255, 255, 0.2); 
+            --glass-border: rgba(93, 64, 55, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-attachment: fixed;
-            color: #fff;
+            background-color: var(--cream-bg);
+            color: var(--wood-brown);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         /* --- ANIMASI DAUN BERGUGURAN --- */
         #leaf-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
-
         .falling-leaf {
-            position: absolute;
-            top: -50px;
-            cursor: default;
-            user-select: none;
-            z-index: 0;
-            animation: fall linear forwards;
+            position: absolute; top: -50px; animation: fall linear forwards;
+            filter: sepia(0.5); opacity: 0.6;
         }
-
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-            }
-        }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
 
         /* --- NAVIGATION --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 8%; background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            padding: 20px 8%; 
+            /* Update: Nav lebih transparan */
+            background: rgba(253, 250, 241, 0.6);
+            backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100;
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .nav-left { display: flex; align-items: center; gap: 20px; }
-        .btn-back {
-            text-decoration: none; color: white; font-size: 0.8rem;
-            background: rgba(255,255,255,0.1); padding: 8px 15px;
-            border-radius: 10px; border: 1px solid var(--glass-border);
-            transition: 0.3s;
-        }
-        .btn-back:hover { background: rgba(255,255,255,0.2); }
-
-        .logo-container { display: flex; align-items: center; gap: 10px; }
-        .main-logo-svg { width: 30px; height: 30px; fill: var(--leaf-green); filter: drop-shadow(0 0 5px var(--leaf-green)); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: bold; }
+        .brand-container { display: flex; align-items: center; gap: 12px; }
+        .user-logo { width: 45px; height: 45px; object-fit: contain; }
+        
+        /* Kembalikan Tagline Logo */
+        .brand-text { display: flex; flex-direction: column; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: bold; line-height: 1.1; }
         .logo span { color: var(--leaf-green); }
+        .sub-brand { font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; font-weight: 600; }
 
-        .cart-icon {
-            cursor: pointer; background: var(--glass-bg); padding: 10px 20px;
-            border-radius: 30px; border: 1px solid var(--glass-border);
-            transition: 0.3s;
+        .nav-links a {
+            text-decoration: none; color: var(--wood-brown); margin-left: 20px;
+            font-weight: 600; font-size: 0.9rem; transition: 0.3s;
+            border: 1px solid var(--wood-brown);
+            padding: 6px 15px; border-radius: 20px;
         }
-        .cart-icon:hover { transform: scale(1.05); background: rgba(255,255,255,0.2); }
+        .nav-links a:hover { color: white; background: var(--leaf-green); border-color: var(--leaf-green); }
 
-        /* --- HEADER & ANIMASI TEKS --- */
-        header { text-align: center; padding: 80px 20px 40px; position: relative; z-index: 1; }
-        .animated-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; overflow: hidden; margin-bottom: 10px; }
-        .animated-title span { 
-            display: inline-block; 
-            transform: translateY(100%); 
-            animation: revealTitle 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards; 
-        }
-        @keyframes revealTitle { to { transform: translateY(0); } }
-
-        /* --- PRODUCT GRID --- */
-        .container {
-            width: 85%; margin: 0 auto; display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; padding-bottom: 100px; position: relative; z-index: 1;
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 85vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 0 20px;
+            position: relative; z-index: 1;
         }
 
-        .glass-card {
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            border-radius: 20px; border: 1px solid var(--glass-border);
-            padding: 20px; text-align: center; transition: 0.4s ease;
-            display: flex; flex-direction: column; justify-content: space-between;
+        .hero h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 4.5rem; margin-bottom: 10px;
+            overflow: hidden;
         }
-        .glass-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.2); }
+        .hero h1 span { 
+            display: inline-block; transform: translateY(100%); 
+            animation: reveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards; 
+        }
+        @keyframes reveal { to { transform: translateY(0); } }
 
-        .product-img {
-            width: 100%; height: 230px; object-fit: contain;
-            background: rgba(255,255,255,0.05); border-radius: 15px; margin-bottom: 15px;
-            padding: 10px;
+        .hero p { 
+            font-size: 1.2rem; opacity: 0; 
+            animation: fadeIn 2s forwards; animation-delay: 0.8s;
+            max-width: 700px; line-height: 1.6; font-style: italic;
+        }
+        @keyframes fadeIn { to { opacity: 0.8; } }
+
+        .btn-explore {
+            margin-top: 35px;
+            padding: 15px 40px;
+            background: var(--wood-brown);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(93, 64, 55, 0.2);
+            border: 2px solid transparent;
+        }
+        .btn-explore:hover { transform: scale(1.1) translateY(-5px); background: var(--leaf-green); }
+
+        /* --- FEATURE SECTION --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; padding: 60px 10%;
+            position: relative; z-index: 1;
         }
 
-        .btn-add {
-            background: #fff; color: var(--wood-brown); border: none;
-            padding: 12px; border-radius: 25px; font-weight: bold;
-            cursor: pointer; width: 100%; transition: 0.3s; margin-top: 15px;
+        .feat-card {
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
-        .btn-add:hover { background: var(--leaf-green); color: white; }
+        .feat-card:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-10px); }
 
-        /* --- MODAL KERANJANG --- */
-        #cart-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+        /* --- HIGHLIGHT PRODUCT SECTION --- */
+        .highlight-section { padding: 40px 8% 80px; position: relative; z-index: 2; text-align: center; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 50px; }
+        
+        .product-highlight-container {
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
         }
+
+        .product-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 25px;
+            width: 340px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.05);
+        }
+        .product-card:hover { transform: translateY(-15px); border-color: var(--leaf-green); box-shadow: 0 20px 40px rgba(93, 64, 55, 0.15); }
+
+        .product-card img {
+            width: 100%; height: 380px; object-fit: cover; border-radius: 20px;
+            margin-bottom: 18px; background: rgba(255,255,255,0.4);
+        }
+
+        .product-card h4 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--wood-brown); }
+        .product-card span { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+
+        /* --- MODAL POP-UP --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(93, 64, 55, 0.05);
+            backdrop-filter: blur(0px); justify-content: center; align-items: center;
+            transition: backdrop-filter 0.4s ease;
+        }
+        .modal.active { display: flex; backdrop-filter: blur(15px); }
 
         .modal-content {
-            background: rgba(30, 30, 30, 0.95); backdrop-filter: blur(20px);
-            padding: 30px; border-radius: 25px; width: 90%; max-width: 480px;
-            border: 1px solid var(--glass-border);
+            background: rgba(253, 250, 241, 0.9); padding: 45px; border-radius: 35px;
+            width: 90%; max-width: 500px; border: 1px solid var(--glass-border);
+            position: relative; box-shadow: 0 40px 80px rgba(93, 64, 55, 0.25);
+            opacity: 0; transform: scale(0.7) translateY(40px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .modal.active .modal-content { opacity: 1; transform: scale(1) translateY(0); }
 
-        .cart-item {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        .close-btn { position: absolute; top: 25px; right: 30px; font-size: 2rem; cursor: pointer; color: var(--wood-brown); transition: 0.3s; }
+        .close-btn:hover { transform: rotate(90deg); color: var(--leaf-green); }
+
+        .modal-body h2 { font-family: 'Playfair Display', serif; margin-bottom: 25px; color: var(--leaf-green); font-size: 2rem; }
+        .detail-item { margin-bottom: 18px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 12px; text-align: left; }
+        .detail-item strong { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--leaf-green); letter-spacing: 1px; }
+        .detail-item p { font-size: 1rem; color: var(--wood-brown); margin-top: 4px; }
+
+        .btn-pesan-modal {
+            background: var(--wood-brown); color: white; border: none; padding: 16px 30px;
+            border-radius: 20px; width: 100%; font-weight: bold; cursor: pointer;
+            transition: 0.3s; margin-top: 15px; font-size: 1rem;
         }
+        .btn-pesan-modal:hover { background: var(--leaf-green); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(109, 140, 84, 0.3); }
 
-        .qty-control { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; }
-        .btn-qty { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        .btn-remove { background: none; border: none; color: #ff7675; cursor: pointer; font-size: 0.8rem; margin-left: 10px; }
-
-        .btn-wa { background: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; }
-        .btn-close { margin-top: 15px; color: #aaa; background: none; border: none; cursor: pointer; width: 100%; }
-
-        /* --- NOTIF TOAST --- */
-        #notification {
-            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--success-green); padding: 12px 30px; border-radius: 50px;
-            z-index: 2000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        /* --- SOCIAL BUTTONS --- */
+        .social-footer { display: flex; justify-content: center; gap: 25px; padding: 30px 0; position: relative; z-index: 2; }
+        .social-btn {
+            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 18px; border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; box-shadow: 0 8px 15px rgba(0,0,0,0.05);
         }
-        #notification.show { bottom: 30px; }
+        .social-btn img { width: 28px; height: 28px; object-fit: contain; }
+        .social-btn:hover { transform: translateY(-10px) scale(1.1); background: white; border-color: var(--leaf-green); }
+
+        footer { text-align: center; padding: 20px 60px 60px; opacity: 0.5; font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero { height: 60vh; }
+            .modal-content { padding: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -160,189 +213,132 @@
     <div id="leaf-container"></div>
 
     <nav>
-        <div class="nav-left">
-            <a href="#" class="btn-back" onclick="window.history.back(); return false;">← Kembali</a>
-            <div class="logo-container">
-                <svg class="main-logo-svg" viewBox="0 0 24 24"><path d="M17,8C11.2,11.6,9,18,9,18C9,18,7.2,14.8,5,12c-2.1-2.7-4-5.1-4-7c0-2.2,1.8-4,4-4C7.2,1,9,2.8,9,5c0,1.2-0.4,2.3-1,3 c2.1,0.6,4.5,2.1,6.5,4c1.6,1.5,2.5,2.9,2.5,4c0,0.6-0.2,1.1-0.5,1.5C18.6,15.7,20,13.1,20,10c0-4.4-3.6-8-8-8c-1.7,0-3.2,0.5-4.6,1.4 M22,12c0,5.5-4.5,10-10,10c-2.4,0-4.6-0.8-6.4-2.2C7.2,20.6,9,19,9,17c0-1.1-0.4-2.1-1-2.9c1.5,0.4,3.1,1.1,4.5,2.1 C14.6,17.7,16,19.3,16,21c0,0.6-0.1,1.1-0.3,1.6C18.4,21.3,20,19.3,20,17c0-2.8-2.2-5-5-5c-1,0-1.9,0.3-2.7,0.8 C13.6,12.3,15,13.1,16,14c1.1,1,2,2.2,2,3.5c0,2.5-2,4.5-4.5,4.5s-4.5-2-4.5-4.5c0-0.7,0.1-1.3,0.4-1.9C6.9,16.5,5,15.6,3,15.6"/></svg>
+        <div class="brand-container">
+            <img src="aset-image/logo.png" alt="Logo" class="user-logo" onerror="this.style.display='none'">
+            <div class="brand-text">
                 <div class="logo">Sher<span>Eve</span></div>
+                <div class="sub-brand">Hampers and Souvenir</div>
             </div>
         </div>
-        <div class="cart-icon" onclick="toggleCart()">
-            🛒 <span id="cart-count">0</span>
+        <div class="nav-links">
+            <a href="#">Beranda</a>
+            <a href="produk.html">PESAN</a> 
         </div>
     </nav>
 
-    <header>
-        <h1 class="animated-title"><span>Aesthetic Collection</span></h1>
-        <p style="opacity: 0.8;">Sentuhan kaca dan kayu untuk kenangan abadi.</p>
-    </header>
+    <section class="hero">
+        <h1><span>SherEve Artistry</span></h1>
+        <p>"Aesthetic by Design, Eco-Friendly by Soul. Memberikan makna lebih pada setiap kado tanpa menyisakan sampah bagi bumi."</p>
+        <a href="produk.html" class="btn-explore">Lihat Koleksi Kami</a>
+    </section>
 
-    <div class="container" id="product-grid"></div>
-
-    <div id="cart-modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; text-align: center; font-family: 'Playfair Display';">Ringkasan Belanja</h2>
-            <div id="cart-items-list"></div>
-            <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 1.2rem; border-top: 1px solid #444; padding-top: 15px;">
-                <span>Total:</span>
-                <span id="total-price" style="font-weight: bold; color: var(--leaf-green);">Rp 0</span>
+    <section class="highlight-section">
+        <h2 class="section-title">Latest Collection</h2>
+        <div class="product-highlight-container">
+            
+            <div class="product-card" onclick="openDetail('The Serenity Box', 'Souvenir pernikahan elegan dengan nuansa floral. mengunakan bahan yaag lembut dan harum bikin nyaman di kulit.', '50 Pcs', 'Nama Pasangan, Tanggal, & Pesan Khusus', 'Custom Desain Label & Pilihan Pita')">
+                <span>Gen-Z Approved</span>
+                <img src="aset-image/img4.jpeg" alt="Serenity Box">
+                <h4>Suncream & soap</h4>
             </div>
-            <button class="btn-wa" onclick="checkoutWA()">Pesan via WhatsApp</button>
-            <button class="btn-close" onclick="toggleCart()">Tutup</button>
+
+            <div class="product-card" onclick="openDetail('Zen Finger Counter', 'Menghadirkan ketenangan dalam genggaman. Tasbih digital dengan desain minimalis dan tekstur matte yang elegan.', '40 Pcs', 'Grafir Nama / Logo Perusahaan', 'Request Penataan Isi & Kartu Ucapan')">
+                <span>Sustainable Luxury</span>
+                <img src="aset-image/img2.jpeg" alt="Oak Gift">
+                <h4>Tasbih Digital</h4>
+            </div>
+
+            <div class="product-card" onclick="openDetail('Precision Nail Clipper', 'Souvenir pemotong kuku ini bukan sekadar alat, melainkan simbol bahwa hal-hal kecil dalam hidup menciptakan keindahan yang sempurna.', '50 Pcs', 'Cetak Nama / Tanggal', 'Sleeve Floral Custom')">
+                <span>Daily Essential</span>
+                <img src="aset-image/img3.jpeg" alt="Oak Gift">
+                <h4>Pemotong Kuku</h4>
+            </div>
+
+            <div class="product-card" onclick="openDetail('Essential Card Holder', 'Simpan kartu dan kebutuhan esensialmu dalam balutan dompet mini berbahan kulit sintetis premium atau kanvas organik.', '50 Pcs', 'Emboss Inisial', 'Custom Warna Material')">
+                <span>Gen-Z Approved</span>
+                <img src="aset-image/img5.jpeg" alt="Oak Gift">
+                <h4>Dompet Mini</h4>
+            </div>
+
+            <div class="product-card" onclick="openDetail('Handy Aesthetic Mirror', 'Cermin saku dengan bingkai kayu jati sisa produksi. Desainnya ergonomis, ringan, dan memiliki kejernihan kaca tinggi.', '40 Pcs', 'Grafir Laser Nama', 'Bentuk Bulat/Persegi')">
+                <span>Organic Gift</span>
+                <img src="aset-image/img1.jpeg" alt="Oak Gift">
+                <h4>Cermin Mini</h4>
+            </div>
+        </div>
+    </section>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeDetail()">&times;</span>
+            <div class="modal-body">
+                <h2 id="modalTitle">Detail Produk</h2>
+                <div class="detail-item"><strong>Info Produk</strong><p id="modalInfo"></p></div>
+                <div class="detail-item"><strong>Min. Order</strong><p id="modalOrder"></p></div>
+                <div class="detail-item"><strong>Customability</strong><p id="modalCustom"></p></div>
+                <div class="detail-item"><strong>Request Desain/Nama</strong><p id="modalRequest"></p></div>
+                <button class="btn-pesan-modal" onclick="window.location.href='produk.html'">Dapatkan Estetikamu</button>
+            </div>
         </div>
     </div>
 
-    <div id="notification">🌿 <span id="notif-text">Ditambahkan!</span></div>
+    <div class="features">
+        <div class="feat-card"><h3>Organik</h3><p>Menggunakan material murni dari alam yang dapat didaur ulang.</p></div>
+        <div class="feat-card"><h3>Handmade</h3><p>Dibuat dengan teliti oleh tangan pengrajin lokal berbakat.</p></div>
+        <div class="feat-card"><h3>Eksklusif</h3><p>Setiap kado memiliki jiwa dan karakter unik yang tidak pasaran.</p></div>
+    </div>
+
+    <div class="social-footer">
+        <a href="https://shopee.co.id/shereve.id" class="social-btn" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="Shopee">
+        </a>
+        <a href="https://www.instagram.com/shereve.id/" class="social-btn" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
+        </a>
+        <a href="mailto:sherevesouvenir@gmail.com" class="social-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Email">
+        </a>
+    </div>
+
+    <footer>&copy; 2026 SherEve Souvenir Artistry. Sustainable Style for Every Celebration.</footer>
 
     <script>
-        // --- DATA PRODUK ---
-        const products = [
-            { id: 1, name: "Terrarium Glass Wood", price: 45000, img: "aset-image/img1.jpeg" },
-            { id: 2, name: "Transparent Wooden Clock", price: 75000, img: "aset-image/img2.jpeg" },
-            { id: 3, name: "Glass Herb Jar with Oak", price: 35000, img: "aset-image/img3.jpeg" },
-            { id: 4, name: "Aesthetic Wood Candle", price: 55000, img: "aset-image/img4.jpeg" },
-            { id: 5, name: "Leaf Pressed Glass Frame", price: 60000, img: "aset-image/img5.jpeg" }
-        ];
+        function openDetail(title, info, order, custom, request) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalInfo').innerText = info;
+            document.getElementById('modalOrder').innerText = order;
+            document.getElementById('modalCustom').innerText = custom;
+            document.getElementById('modalRequest').innerText = request;
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+        }
 
-        let cart = [];
+        function closeDetail() {
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 500);
+        }
 
-        // --- ANIMASI DAUN BERGUGURAN (JS DRIVEN) ---
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) { closeDetail(); }
+        }
+
         function createLeaf() {
             const container = document.getElementById('leaf-container');
-            const leafSymbols = ['🌿', '🍃', '🍂', '🍁'];
+            const symbols = ['🌿', '🍃', '🍂'];
             const leaf = document.createElement('div');
-            
             leaf.className = 'falling-leaf';
-            leaf.innerText = leafSymbols[Math.floor(Math.random() * leafSymbols.length)];
-            
-            const startPos = Math.random() * window.innerWidth;
-            const duration = 5 + Math.random() * 10; // 5s sampai 15s
-            const size = 15 + Math.random() * 20; // 15px sampai 35px
-            const opacity = 0.3 + Math.random() * 0.5;
-
-            leaf.style.left = startPos + 'px';
+            leaf.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            const duration = 8 + Math.random() * 8;
+            leaf.style.left = Math.random() * 100 + 'vw';
             leaf.style.animationDuration = duration + 's';
-            leaf.style.fontSize = size + 'px';
-            leaf.style.opacity = opacity;
-
+            leaf.style.fontSize = (15 + Math.random() * 20) + 'px';
             container.appendChild(leaf);
-
-            // Hapus elemen setelah animasi selesai agar tidak memberatkan browser
-            setTimeout(() => {
-                leaf.remove();
-            }, duration * 1000);
+            setTimeout(() => { leaf.remove(); }, duration * 1000);
         }
-
-        // Jalankan pembuat daun setiap 600ms
-        setInterval(createLeaf, 600);
-
-        // --- LOGIKA KERANJANG ---
-        function init() {
-            const grid = document.getElementById('product-grid');
-            products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="glass-card">
-                        <img src="${p.img}" class="product-img" alt="${p.name}">
-                        <div>
-                            <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${p.name}</h3>
-                            <p style="color:#dcedc8; font-weight:bold;">Rp ${p.price.toLocaleString('id-ID')}</p>
-                        </div>
-                        <button class="btn-add" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
-                    </div>
-                `;
-            });
-        }
-
-        function addToCart(id) {
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ id: id, qty: 1 });
-            }
-            updateCartUI();
-            showNotification("Produk ditambahkan!");
-        }
-
-        function changeQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) removeFromCart(id);
-            }
-            updateCartUI();
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(i => i.id !== id);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const count = cart.reduce((acc, curr) => acc + curr.qty, 0);
-            document.getElementById('cart-count').innerText = count;
-            
-            const list = document.getElementById('cart-items-list');
-            const totalEl = document.getElementById('total-price');
-            list.innerHTML = cart.length === 0 ? "<p style='text-align:center; opacity:0.5;'>Belum ada produk.</p>" : "";
-            
-            let total = 0;
-            cart.forEach(item => {
-                const p = products.find(prod => prod.id === item.id);
-                const subtotal = p.price * item.qty;
-                total += subtotal;
-                
-                list.innerHTML += `
-                    <div class="cart-item">
-                        <div style="flex:1">
-                            <p style="font-weight:600; font-size:0.9rem;">${p.name}</p>
-                            <p style="font-size:0.8rem; opacity:0.7;">Rp ${p.price.toLocaleString('id-ID')}</p>
-                        </div>
-                        <div class="qty-control">
-                            <button class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
-                            <span>${item.qty}</span>
-                            <button class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
-                        </div>
-                        <button class="btn-remove" onclick="removeFromCart(${item.id})">🗑️</button>
-                    </div>
-                `;
-            });
-            totalEl.innerText = `Rp ${total.toLocaleString('id-ID')}`;
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        function showNotification(text) {
-            const notif = document.getElementById('notification');
-            document.getElementById('notif-text').innerText = text;
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.add('show'), 10);
-            setTimeout(() => notif.classList.remove('show'), 2000);
-        }
-
-        function checkoutWA() {
-            if (cart.length === 0) return alert("Keranjang masih kosong!");
-            const phone = "628123456789"; // Ganti nomor Anda
-            let message = "*PESANAN BARU - WOODY GLASS*%0A%0A";
-            
-            cart.forEach((item, i) => {
-                const p = products.find(prod => prod.id === item.id);
-                message += `${i+1}. *${p.name}* x${item.qty} (Rp ${(p.price * item.qty).toLocaleString('id-ID')})%0A`;
-            });
-            
-            const total = cart.reduce((acc, curr) => {
-                const p = products.find(prod => prod.id === curr.id);
-                return acc + (p.price * curr.qty);
-            }, 0);
-            
-            message += `%0A*TOTAL PEMBAYARAN: Rp ${total.toLocaleString('id-ID')}*%0A%0AMohon info selanjutnya ya!`;
-            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-        }
-
-        init();
+        setInterval(createLeaf, 900);
     </script>
 </body>
 </html>
